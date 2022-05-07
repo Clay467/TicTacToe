@@ -28,9 +28,9 @@ main {
 }
 
 /* .buttons,
-.scoreBoard, */
+.gameMessage, */
 .container {
-    border: 2px solid black;
+    border: 2px solid #0B0C10;
     height: 500px;
     width: 500px;
     display: grid;
@@ -39,7 +39,7 @@ main {
 }
 
 .container > div {
-    border: 2px solid black;
+    border: 2px solid #0B0C10;
     display: flex;
     justify-content: center;
     align-items: center;
