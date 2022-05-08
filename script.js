@@ -1,49 +1,59 @@
 const Gameboard = (() => {
     const container = document.querySelector('.container');
-    let gameBoard = [];
+    let boardDivs = [];
+
+    //loops up to 9, creates grid divs, then assigns them an event listener for the user
 
     for (let i=0;i<9;i++) {
         const div = document.createElement('div');
-        div.addEventListener('click', makeMove.bind(this, div));
+        div.addEventListener('click', playerMove.bind(this, div));
         container.appendChild(div);
-        gameBoard.push(div);
+        boardDivs.push(div);
     }
-    return gameBoard;
+
+    return boardDivs;
 })();
 
-function makeMove(div) {
+function playerMove(div){
     if (!div.textContent){
         div.textContent = 'X';
-        setTimeout(function() {
-            checkWin(divBoardToContentArray());
-        }, 10);
-        setTimeout(function() {
-            Gameboard[findBestMove(divBoardToContentArray(Gameboard))].textContent = 'O';
-            setTimeout(function() {
-                checkWin(divBoardToContentArray());
-            }, 10);
-        }, 50);
+        checkWin();
+        
+        if (evaluate() == undefined) AIMove();
     }
 };
 
+function AIMove(){
+    setTimeout(function() {
+        Gameboard[findBestMove(divBoardToContentArray())].textContent = 'O';
+        checkWin();
+    }, 50);
+}
+
+//converts the current board to an array of textContent
+
 function divBoardToContentArray(){
-    board = [];
+    let board = [];
     for (let i=0;i<Gameboard.length;i++){
     board.push(Gameboard[i].textContent);
     }
     return board;
 }
 
-function checkWin(board) {
-    gameState = evaluate(board);
+//runs evaluate board then decides whether or not to alert the player of a terminal state result
 
-    if (gameState == 10) alert('X wins!'); 
-    if (gameState == -10) alert('O wins!');
-    if (gameState == 0) alert('It\'s a tie!'); 
-
-    if (gameState != undefined) {
-        clearBoard();
-    }
+function checkWin() {
+    setTimeout(function() {
+        let gameState = evaluate();
+    
+        if (gameState == 10) alert('X wins!'); 
+        if (gameState == -10) alert('O wins!');
+        if (gameState == 0) alert('It\'s a tie!'); 
+    
+        if (gameState != undefined) {
+            clearBoard();
+        }
+    });
 };
 
 function clearBoard(){
@@ -52,9 +62,7 @@ function clearBoard(){
     }
 };
 
-function evaluate(board) {
-
-    if (!board.includes('')) return 0;
+function evaluate(board=divBoardToContentArray()){
 
     if (
         //rows
@@ -129,7 +137,12 @@ function evaluate(board) {
         board[6] === 'O')) {
         return -10;
         }
+
+        if (!board.includes('')) {
+            return 0;
+        } else {
         return undefined;
+        }
 };
 
 
@@ -167,9 +180,11 @@ function minimax(board, depth, isMax) {
                 board[i]='';
             }
         }
-        return best - depth;
+        return best + depth;
     }
 }
+
+// initial call of minimax function
 
 function findBestMove(board) {
     let bestVal = 1000;
