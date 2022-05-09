@@ -57,8 +57,20 @@ main {
     }
 }
 
+@media screen and (min-width: 1000px) {
+    .container {
+        width: 700px;
+        height: 700px;
+    }
+
+    .container > div {
+        font-size: 168px;
+    }
+}
+
 .container > div:hover {
     background-color: #45A29E;
+    cursor: pointer;
 }
 
 footer {
