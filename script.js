@@ -19,15 +19,13 @@ function playerMove(div){
         div.textContent = 'X';
         checkWin();
         
-        if (evaluate() == undefined) AIMove();
+        if (evaluate() == undefined) setTimeout(AIMove,50);
     }
 };
 
 function AIMove(){
-    setTimeout(function() {
-        Gameboard[findBestMove(divBoardToContentArray())].textContent = 'O';
-        checkWin();
-    }, 50);
+    Gameboard[findBestMove(divBoardToContentArray())].textContent = 'O';
+    checkWin();
 }
 
 //converts the current board to an array of textContent
@@ -53,7 +51,7 @@ function checkWin() {
         if (gameState != undefined) {
             clearBoard();
         }
-    });
+    }, 10);
 };
 
 function clearBoard(){
